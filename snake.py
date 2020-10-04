@@ -3,14 +3,17 @@ import random
 import pygame
 
 pygame.init()
+
 resolucao = (500, 500)
 screen = pygame.display.set_mode(resolucao)
-pygame.display.update()
+
+preto = (0, 0, 0)
 
 
 class snake:
     cor = (255, 255, 255)
     tamanho = (10, 10)
+    velocidade = 10
 
     def __init__(self):
         self.textura = pygame.Surface(self.tamanho)
@@ -18,10 +21,27 @@ class snake:
 
         self.corpo = [(100, 100), (90, 100), (80, 100)]
 
+        self.direcao = "direita"
+
 
     def blit(self, screen):
         for posicao in self.corpo:
             screen.blit(self.textura, posicao)
+
+
+    def andar(self):
+        cabeca = self.corpo[0]
+        x = cabeca[0]
+        y = cabeca[1]
+
+        if self.direcao == "direita":
+            self.corpo[0] = (x + self.velocidade, y)
+        if self.direcao == "esquerda":
+            self.corpo[0] = (x - self.velocidade, y)
+        if self.direcao == "cima":
+            self.corpo[0] = (x, y - self.velocidade)
+        if self.direcao == "baixo":
+            self.corpo[0] = (x, y + self.velocidade)
 
 
 class Frutinha:
@@ -50,6 +70,9 @@ while True:
         if event.type == pygame.QUIT:
             exit()
 
+    cobrinha.andar()
+
+    screen.fill(preto)
     frutinha.blit(screen)
     cobrinha.blit(screen)
 
